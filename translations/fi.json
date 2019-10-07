@@ -1,0 +1,9 @@
+{
+    "LOADING": "Ladataan...",
+    "NO_TIMETABLE": "Ei aikatauluja",
+    "DEPARTURE_TIME": "Lähtöaika",
+    "TRAIN": "Juna",
+    "DESTINATION": "Määränpää",
+    "TRACK": "Raide",
+    "CANCELLED": "Peruttu!"
+}

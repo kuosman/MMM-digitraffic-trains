@@ -1,0 +1,28 @@
+div.loading, div.no-timetables {
+	width: 470px;
+}
+
+th.header {
+	color: #ffffff;
+}
+
+th.departure-time {
+	width: 170px;
+}
+
+th.train {
+	width: 60px;
+}
+
+th.destination {
+	width: 150px;
+}
+
+th.track {
+	width: 60px;
+}
+
+span.icon {
+	padding-right: 4px;
+	font-size: 16px;
+}

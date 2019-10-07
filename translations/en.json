@@ -1,0 +1,9 @@
+{
+    "LOADING": "Loading...",
+    "NO_TIMETABLE": "No chedules",
+    "DEPARTURE_TIME": "Departure time",
+    "TRAIN": "Train",
+    "DESTINATION": "Destination",
+    "TRACK": "Track",
+    "CANCELLED": "Cancelled!"
+}
