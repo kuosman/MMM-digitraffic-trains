@@ -2,7 +2,7 @@
 
 The `mm-digitraffic-trains` module fetches train timetable data from Digitraffic api (Finland) and shows the timetables for configured stations.
 
-You will need to check the "stationShortCode" from https://rata.digitraffic.fi/api/v1/metadata/stations and add the code of the station you want to show in the config station string. 
+You will need to check the `stationShortCode` from https://rata.digitraffic.fi/api/v1/metadata/stations and add the code of the station you want to show in the config station string. 
 
 ## Screenshot
 
@@ -21,10 +21,10 @@ modules: [{
 	header: "Trains",
 	config: {
 		icon: "train", // See: https://fontawesome.com/icons?d=gallery
-        showIcon: true,
-        station : "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
-        updateInterval: 2500,
-        trainCount: 6
+		showIcon: true,
+		station : "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
+		updateInterval: 2500,
+		trainCount: 6
 	}
 }]
 ````
