@@ -24,7 +24,7 @@ Module.register("mm-digitraffic-trains", {
     stationsCache: null,
     updateTimer: null,
 	firstTimeLoaded: false,
-    
+
     // Override get styles.
 	getStyles: function() {
 		return [
@@ -52,7 +52,7 @@ Module.register("mm-digitraffic-trains", {
             wrapper.className = "light small loading";
             return wrapper;
         }
-        
+
         // If not trains then show no timetable message
 		if (this.trains.length === 0) {
             var wrapper = document.createElement("div");
@@ -60,7 +60,7 @@ Module.register("mm-digitraffic-trains", {
             wrapper.className = "light small no-timetables";
             return wrapper;
         }
-        
+
 
         // Create dom
         var table = document.createElement("table");
@@ -83,7 +83,7 @@ Module.register("mm-digitraffic-trains", {
 			text: self.translate("TRACK"),
 			cls: "header-raide"
         }];
-       
+
         // Loop headers and create table row th's
         headers.forEach(function(header) {
             var cell = document.createElement("th");
@@ -110,7 +110,7 @@ Module.register("mm-digitraffic-trains", {
             var timeCellContent = scheduledTime;
             if (scheduledTime != estimateTime) {
                 timeCellContent += "<span class='light small late'> &#8594; " + estimateTime + "</span>";
-            } 
+            }
             if (train.cancelled) {
                 timeCellContent += "<span class='cancelled'> " + self.translate("CANCELLED") + " </span>";
             }
@@ -143,13 +143,13 @@ Module.register("mm-digitraffic-trains", {
     scheduleNextFetch: function(){
 		var self = this;
         var delay = self.config.updateInterval || 60 * 1000;
-		
+
 		if(self.firstTimeLoaded === false && self.stationsCache === null) {
 			self.sendSocketNotification("GET_STATIONS");
 		} else if(self.firstTimeLoaded === false && self.stationsCache !== null) {
 			self.sendSocketNotification("CONFIG", self.config);
 			self.firstTimeLoaded = true;
-		} else {		
+		} else {
 			clearTimeout(this.updateTimer);
 
 			self.updateTimer = setTimeout(function () {

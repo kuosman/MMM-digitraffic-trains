@@ -27,7 +27,7 @@ module.exports = NodeHelper.create({
           }, function(error, response, body) {
             if (!error && response.statusCode === 200) {
               var stations = JSON.parse(body);
-        
+
               stationsCache = {};
               for(var s in stations) {
                 var station = stations[s];
@@ -41,16 +41,16 @@ module.exports = NodeHelper.create({
               });
             }
           }
-        );    
+        );
     },
     fetchDigitraffic() {
         var self = this;
-  
-        var url = "https://rata.digitraffic.fi/api/v1/live-trains" + 
-                            "?station=" + self.config.station + 
-                            "&arrived_trains=0" + 
-                            "&arriving_trains=0" + 
-                            "&departed_trains=0" + 
+
+        var url = "https://rata.digitraffic.fi/api/v1/live-trains" +
+                            "?station=" + self.config.station +
+                            "&arrived_trains=0" +
+                            "&arriving_trains=0" +
+                            "&departed_trains=0" +
                             "&departing_trains=" + self.config.trainCount;
         request({
             url: url,
@@ -61,18 +61,18 @@ module.exports = NodeHelper.create({
 				var data = JSON.parse(body);
 				for(var t=0; t<data.length; t++) {
 				  var train = data[t];
-				
+
 				  var lineID = train.commuterLineID;
 				  var cancelled = train.cancelled;
 				  var scheduledTime;
 				  var estimateTime;
 				  var track;
 				  var destination;
-				
+
 				  //get the estimated time
 				  for(var i=0; i<train.timeTableRows.length; i++) {
 					var tt = train.timeTableRows[i];
-				
+
 					if(tt.stationShortCode === self.config.station && tt.type === 'DEPARTURE') {
 					  scheduledTime = new Date(tt.scheduledTime);
 					  estimateTime = (tt.liveEstimateTime)? new Date(tt.liveEstimateTime) : scheduledTime;
@@ -80,12 +80,12 @@ module.exports = NodeHelper.create({
 					  break;
 					}
 				  }
-				
+
 				  //get destination (last entry)
 				  var ttDestination = train.timeTableRows[train.timeTableRows.length - 1];
 				  destination = ttDestination.stationShortCode;
 				  train.scheduledTime = moment(scheduledTime).format("HH:mm");
-				  train.estimateTime = moment(estimateTime).format("HH:mm");				  
+				  train.estimateTime = moment(estimateTime).format("HH:mm");
 				  train.lineID =  lineID;
 				  train.track =  track;
 				  train.destination = destination;

@@ -2,7 +2,7 @@
 
 The `mm-digitraffic-trains` module fetches train timetable data from Digitraffic api (Finland) and shows the timetables for configured stations.
 
-You will need to check the `stationShortCode` from https://rata.digitraffic.fi/api/v1/metadata/stations and add the code of the station you want to show in the config station string. 
+You will need to check the `stationShortCode` from https://rata.digitraffic.fi/api/v1/metadata/stations and add the code of the station you want to show in the config station string.
 
 ## Screenshot
 
@@ -16,7 +16,7 @@ You will need to check the `stationShortCode` from https://rata.digitraffic.fi/a
 2) Add to the modules array in the `MagicMirror/config/config.js` file:
 ````javascript
 modules: [{
-	module: "mm-digitransit-trains",
+	module: "mm-digitraffic-trains",
 	position: "top_right",
 	header: "Trains",
 	config: {
