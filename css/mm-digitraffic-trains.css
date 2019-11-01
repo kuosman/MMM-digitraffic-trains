@@ -26,3 +26,20 @@ span.icon {
 	padding-right: 4px;
 	font-size: 16px;
 }
+
+td.error {
+	text-align: left !important;
+	color:#ffa500;
+}
+
+th, td {
+	text-align: left;
+}
+
+th.line, td.line {
+	text-align: center;
+}
+
+th.train, td.track {
+	text-align: center;
+}

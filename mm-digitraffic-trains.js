@@ -16,25 +16,26 @@ Module.register("mm-digitraffic-trains", {
     defaults: {
         icon: "train", // See: https://fontawesome.com/icons?d=gallery
         showIcon: true,
-        station : "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
+        station: "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
         updateInterval: 2500,
         trainCount: 6,
         initialLoadDelay: 0 // 0 seconds delay
     },
     stationsCache: null,
     updateTimer: null,
-	firstTimeLoaded: false,
+    firstTimeLoaded: false,
+    error: false,
 
     // Override get styles.
-	getStyles: function() {
-		return [
-			this.file("css/all.min.css"), // Font Awesome
-			this.file("css/mm-digitraffic-trains.css")
-		]
+    getStyles: function () {
+        return [
+            this.file("css/all.min.css"), // Font Awesome
+            this.file("css/mm-digitraffic-trains.css")
+        ]
     },
 
     // Override get translations
-    getTranslations: function() {
+    getTranslations: function () {
         return {
             en: "translations/en.json",
             fi: "translations/fi.json"
@@ -42,8 +43,8 @@ Module.register("mm-digitraffic-trains", {
     },
 
     // Override dom generator.
-    getDom: function() {
-		var self = this;
+    getDom: function () {
+        var self = this;
         // If not getted stations then show loading message
         if (self.stationsCache === null) {
             self.sendSocketNotification("GET_STATIONS");
@@ -54,13 +55,12 @@ Module.register("mm-digitraffic-trains", {
         }
 
         // If not trains then show no timetable message
-		if (this.trains.length === 0) {
+        if (this.trains.length === 0) {
             var wrapper = document.createElement("div");
             wrapper.innerHTML = self.translate("NO_TIMETABLE");
             wrapper.className = "light small no-timetables";
             return wrapper;
         }
-
 
         // Create dom
         var table = document.createElement("table");
@@ -70,22 +70,22 @@ Module.register("mm-digitraffic-trains", {
         table.appendChild(row);
 
         var headers = [
-        {
-			text: self.translate("DEPARTURE_TIME"),
-			cls: "departure-time"
-		}, {
-			text: self.translate("TRAIN"),
-			cls: "train"
-		}, {
-			text: self.translate("DESTINATION"),
-			cls: "destination"
-		}, {
-			text: self.translate("TRACK"),
-			cls: "header-raide"
-        }];
+            {
+                text: self.translate("DEPARTURE_TIME"),
+                cls: "departure-time"
+            }, {
+                text: self.translate("TRAIN"),
+                cls: "train"
+            }, {
+                text: self.translate("DESTINATION"),
+                cls: "destination"
+            }, {
+                text: self.translate("TRACK"),
+                cls: "header-raide"
+            }];
 
         // Loop headers and create table row th's
-        headers.forEach(function(header) {
+        headers.forEach(function (header) {
             var cell = document.createElement("th");
             cell.className = "light small header " + header.cls || "";
             cell.innerHTML = header.text || "";
@@ -93,12 +93,11 @@ Module.register("mm-digitraffic-trains", {
         });
 
         // Generate train's timetable
-        this.trains.forEach(function(train) {
+        this.trains.forEach(function (train) {
             var row = document.createElement("tr");
-            table.appendChild(row);
 
             // icon
-			var icon = "";
+            var icon = "";
             if (self.config.showIcon === true) {
                 icon = "<span class='icon'><i class='fas fa-" + self.config.icon + "'></i></span>";
             }
@@ -135,46 +134,69 @@ Module.register("mm-digitraffic-trains", {
             trackCell.innerHTML = train.track;
             trackCell.className = "light small track";
             row.appendChild(trackCell);
+
+            table.appendChild(row);
         });
+
+        // If error, then show error message
+        if (this.error === true) {
+            var row = document.createElement("tr");
+            var errorCell = document.createElement("td");
+            var errorIcon = "<span class='icon'><i class='fas fa-exclamation-triangle'></i></span>"
+            errorCell.innerHTML = errorIcon + self.translate("TIMETABLE_ERROR");
+            errorCell.className = "light small line error";
+            errorCell.setAttribute("colspan", "4");
+            row.appendChild(errorCell);
+            table.appendChild(row);
+        }
 
         return table;
     },
     // Schedule next fetch
-    scheduleNextFetch: function(){
-		var self = this;
+    scheduleNextFetch: function () {
+        var self = this;
         var delay = self.config.updateInterval || 60 * 1000;
 
-		if(self.firstTimeLoaded === false && self.stationsCache === null) {
-			self.sendSocketNotification("GET_STATIONS");
-		} else if(self.firstTimeLoaded === false && self.stationsCache !== null) {
-			self.sendSocketNotification("CONFIG", self.config);
-			self.firstTimeLoaded = true;
-		} else {
-			clearTimeout(this.updateTimer);
+        if (self.firstTimeLoaded === false && self.stationsCache === null) {
+            self.sendSocketNotification("GET_STATIONS");
+        } else if (self.firstTimeLoaded === false && self.stationsCache !== null) {
+            self.sendSocketNotification("CONFIG", self.config);
+            self.firstTimeLoaded = true;
+        } else {
+            clearTimeout(this.updateTimer);
 
-			self.updateTimer = setTimeout(function () {
-				self.sendSocketNotification("CONFIG", self.config);
-			}, delay);
-		}
+            self.updateTimer = setTimeout(function () {
+                self.sendSocketNotification("CONFIG", self.config);
+            }, delay);
+        }
     },
 
-    notificationReceived: function(notification, payload, sender) {
+    notificationReceived: function (notification, payload, sender) {
         if (notification === "DOM_OBJECTS_CREATED") {
             this.scheduleNextFetch();
-		}
+        }
     },
 
-    socketNotificationReceived: function(notification, payload) {
-        switch(notification) {
+    socketNotificationReceived: function (notification, payload) {
+        switch (notification) {
             case 'STATIONS_RESPONSE':
                 this.stationsCache = payload.data;
                 this.scheduleNextFetch();
                 break;
+            case 'STATIONS_RESPONSE_ERROR':
+                this.scheduleNextFetch();
+                break;
             case 'TIME_TABLE_RESPONSE':
-                    this.trains = payload.data;
-                    this.updateDom();
-                    this.scheduleNextFetch();
-            break;
+                this.trains = payload.data;
+                this.error = false;
+                this.updateDom();
+                this.scheduleNextFetch();
+                break;
+            case 'TIME_TABLE_RESPONSE_ERROR':
+                this.error = true;
+                this.updateDom();
+                this.scheduleNextFetch();
+                break;
         }
     }
 });
