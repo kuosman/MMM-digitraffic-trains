@@ -40,4 +40,4 @@ The following properties can be configured:
 | `showIcon`                   | Show icon or not, default `true`
 | `station`                    | Station short code, default `KRS`. See others: https://rata.digitraffic.fi/api/v1/metadata/stations
 | `updateInterval`             | Update interval in milliseconds, default `2500`
-| `trainCount`				   | Showed departing trains count
+| `trainCount`				   | Showed departing trains count, default `6`
