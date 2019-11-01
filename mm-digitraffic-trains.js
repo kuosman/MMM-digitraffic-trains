@@ -108,7 +108,7 @@ Module.register("mm-digitraffic-trains", {
             var estimateTime = train.estimateTime;
             var timeCellContent = scheduledTime;
             if (scheduledTime != estimateTime) {
-                timeCellContent += "<span class='light small late'> &#8594; " + estimateTime + "</span>";
+                timeCellContent += "<span class='icon'><i class='fas fa-arrow-right'></i></span><span class='light small late'>" + estimateTime + "</span>";
             }
             if (train.cancelled) {
                 timeCellContent += "<span class='cancelled'> " + self.translate("CANCELLED") + " </span>";
