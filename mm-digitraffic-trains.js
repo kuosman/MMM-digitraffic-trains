@@ -19,7 +19,8 @@ Module.register("mm-digitraffic-trains", {
         station: "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
         updateInterval: 2500,
         trainCount: 6,
-        initialLoadDelay: 0 // 0 seconds delay
+        initialLoadDelay: 0, // 0 seconds delay,
+        showOnlyDestinations: []
     },
     stationsCache: null,
     updateTimer: null,
@@ -54,6 +55,12 @@ Module.register("mm-digitraffic-trains", {
             return wrapper;
         }
 
+        // If showOnLyDestinations then filter trains so at there is only wanted destinations
+        if (self.config.showOnlyDestinations.length > 0) {
+            self.trains = self.trains.filter(function(train){
+                return self.config.showOnlyDestinations.includes(self.stationsCache[train.destination]);
+            });
+        }
         // If not trains then show no timetable message
         if (this.trains.length === 0) {
             var wrapper = document.createElement("div");

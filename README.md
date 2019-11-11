@@ -24,7 +24,8 @@ modules: [{
 		showIcon: true,
 		station : "KRS", // See: https://rata.digitraffic.fi/api/v1/metadata/stations
 		updateInterval: 2500,
-		trainCount: 6
+		trainCount: 6,
+		showOnlyDestinations: ['Helsinki'] // If defined, shows only trains what destination is defined station(s). Increase also trainCount if defined.
 	}
 }]
 ````
