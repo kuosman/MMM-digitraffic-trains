@@ -35,10 +35,11 @@ modules: [{
 The following properties can be configured:
 
 
-| Option                       | Description
-| ---------------------------- | -----------
-| `icon`                       | Showed icon style class, default `train`. See others: https://fontawesome.com/icons?d=gallery
-| `showIcon`                   | Show icon or not, default `true`
-| `station`                    | Station short code, default `KRS`. See others: https://rata.digitraffic.fi/api/v1/metadata/stations
-| `updateInterval`             | Update interval in milliseconds, default `2500`
-| `trainCount`				   | Showed departing trains count, default `6`
+| Option                       	| Description
+| -----------------------------	| -----------
+| `icon`						| Showed icon style class, default `train`. See others: https://fontawesome.com/icons?d=gallery
+| `showIcon`					| Show icon or not, default `true`
+| `station`						| Station short code, default `KRS`. See others: https://rata.digitraffic.fi/api/v1/metadata/stations
+| `updateInterval`				| Update interval in milliseconds, default `2500`
+| `trainCount`					| Showed departing trains count, default `6`
+| `showOnlyDestinations`		| Show only trains what destination is defined stations(s)
