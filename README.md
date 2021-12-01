@@ -13,7 +13,8 @@ You will need to check the `stationShortCode` from https://rata.digitraffic.fi/a
 ## Using the module
 
 1) Clone this repository under `MagicMirror/modules` folder
-2) Add to the modules array in the `MagicMirror/config/config.js` file:
+2) Run `npm install` in `MagicMirror/modules/MMM-digitraffic-trains` folder
+3) Add to the modules array in the `MagicMirror/config/config.js` file:
 ````javascript
 modules: [{
 	module: "MMM-digitraffic-trains",
@@ -29,6 +30,7 @@ modules: [{
 	}
 }]
 ````
+
 
 ## Configuration options
 
