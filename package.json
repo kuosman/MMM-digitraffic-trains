@@ -1,0 +1,27 @@
+{
+    "name": "Magic-Mirror-Module-Digitraffic-Trains",
+    "version": "1.0.0",
+    "description": "This module for the Magic Mirror allows you to show trains start and stop time for wanted station.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kuosman/MMM-digitraffic-trains"
+    },
+    "keywords": [
+        "magic mirror",
+        "smart mirror",
+        "module",
+        "remote control",
+        "control"
+    ],
+    "author": "Joseph Bethge",
+    "contributors": "git+https://github.com/kuosman/MMM-digitraffic-trains/graphs/contributors",
+    "license": "MIT",
+    "bugs": {
+        "url": "git+https://github.com/kuosman/MMM-digitraffic-trains/issues"
+    },
+    "homepage": "git+https://github.com/kuosman/MMM-digitraffic-trains#readme",
+    "dependencies": {
+        "moment": "latest",
+        "request": "latest"
+    }
+}

@@ -22,8 +22,12 @@ module.exports = NodeHelper.create({
   fetchStations() {
     var self = this;
     request({
+      headers: {
+        "accept-encoding": "gzip"
+      },
       url: "https://rata.digitraffic.fi/api/v1/metadata/stations",
-      method: "GET"
+      method: "GET",
+      gzip: true
     }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         var stations = JSON.parse(body);
@@ -57,8 +61,12 @@ module.exports = NodeHelper.create({
       "&departed_trains=0" +
       "&departing_trains=" + self.config.trainCount;
     request({
+      headers: {
+        "accept-encoding": "gzip"
+      },
       url: url,
-      method: "GET"
+      method: "GET",
+      gzip: true
     }, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         var trains = [];
