@@ -1,16 +1,13 @@
 /* global Module*
 
 /* Magic Mirror
-*  Module: mm-digitraffic-trains
+*  Module: MM-digitraffic-trains
 *
-*  Add this to config.js:
-
-
 *
 *  By Marko Kuosmanen http://github.com/kuosman
 *  MIT Licenced.
 */
-Module.register("mm-digitraffic-trains", {
+Module.register("MMM-digitraffic-trains", {
 
     // Default module config.
     defaults: {
