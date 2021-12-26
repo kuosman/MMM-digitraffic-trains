@@ -1,46 +1,59 @@
 div.loading, div.no-timetables {
-	width: 470px;
+  width: 470px;
+}
+
+th {
+  text-align: left;
 }
 
 th.header {
-	color: #ffffff;
+  color: #ffffff;
 }
 
 th.departure-time {
-	width: 170px;
+  width: 170px;
 }
 
 th.train {
-	width: 60px;
+  width: 60px;
 }
 
 th.destination {
-	width: 150px;
+  width: 150px;
 }
 
 th.track {
-	width: 60px;
+  width: 60px;
+}
+
+th.line {
+  text-align: center;
+}
+
+th.train {
+  text-align: center;
 }
 
 span.icon {
-	padding-right: 4px;
-	padding-left: 4px;
-	font-size: 16px;
+  padding-right: 4px;
+  padding-left: 4px;
+  font-size: 16px;
+}
+
+td {
+  text-align: left;
 }
 
 td.error {
-	text-align: left !important;
-	color:#ffa500;
+  text-align: left !important;
+  color: #ffa500;
 }
 
-th, td {
-	text-align: left;
+td.line {
+  text-align: center;
 }
 
-th.line, td.line {
-	text-align: center;
+td.track {
+  text-align: center;
 }
-
-th.train, td.track {
-	text-align: center;
-}
+/*# sourceMappingURL=mm-digitraffic-trains.css.map */

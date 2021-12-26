@@ -1,0 +1,59 @@
+div {
+	&.loading, &.no-timetables {
+		width: 470px;
+	}
+}
+
+th {
+	&.header {
+		color: #ffffff;
+	}
+
+	&.departure-time {
+		width: 170px;
+	}
+
+	&.train {
+		width: 60px;
+	}
+
+	&.destination {
+		width: 150px;
+	}
+
+	&.track {
+		width: 60px;
+	}
+
+	&.line {
+		text-align: center;
+	}
+
+	&.train {
+		text-align: center;
+	}
+
+	text-align: left;
+}
+
+span {
+	&.icon {
+		padding-right: 4px;
+		padding-left: 4px;
+		font-size: 16px;
+	}
+}
+
+td {
+	text-align: left;
+	&.error {
+		text-align: left !important;
+		color:#ffa500;
+	}
+	&.line {
+		text-align: center;
+	}
+	&.track {
+		text-align: center;
+	}
+}

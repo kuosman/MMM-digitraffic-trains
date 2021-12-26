@@ -31,7 +31,6 @@ modules: [{
 }]
 ````
 
-
 ## Configuration options
 
 The following properties can be configured:
