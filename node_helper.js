@@ -97,12 +97,12 @@ module.exports = NodeHelper.create({
           var destination;
 
           // get the estimated time
-          train.timeTableRows.forEach(timeTable => {
+          train.timeTableRows.some(timeTable => {
             if (timeTable.stationShortCode === self.config.station && timeTable.type === 'DEPARTURE') {
               scheduledTime = new Date(timeTable.scheduledTime);
               estimateTime = (timeTable.liveEstimateTime) ? new Date(timeTable.liveEstimateTime) : scheduledTime;
               track = timeTable.commercialTrack;
-              break;
+              return true;
             }
           });
 
