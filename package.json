@@ -1,6 +1,6 @@
 {
     "name": "Magic-Mirror-Module-Digitraffic-Trains",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "This module for the Magic Mirror allows you to show trains start and stop time for wanted station.",
     "repository": {
         "type": "git",
