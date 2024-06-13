@@ -8,7 +8,6 @@
 *  MIT Licenced.
 */
 Module.register('MMM-digitraffic-trains', {
-
     // Default module config.
     defaults: {
         icon: 'train', // See: https://fontawesome.com/icons?d=gallery
@@ -17,12 +16,13 @@ Module.register('MMM-digitraffic-trains', {
         updateInterval: 2500,
         trainCount: 6,
         initialLoadDelay: 0, // 0 seconds delay,
-        showOnlyDestinations: []
+        showOnlyDestinations: [],
     },
     stationsCache: null,
     updateTimer: null,
     firstTimeLoaded: false,
     error: false,
+    identifier: new UUID(),
 
     /**
      * Gets styles
@@ -32,8 +32,8 @@ Module.register('MMM-digitraffic-trains', {
     getStyles: function () {
         return [
             this.file('css/all.min.css'), // Font Awesome
-            this.file('css/mm-digitraffic-trains.css')
-        ]
+            this.file('css/mm-digitraffic-trains.css'),
+        ];
     },
 
     /**
@@ -43,7 +43,7 @@ Module.register('MMM-digitraffic-trains', {
     getTranslations: function () {
         return {
             en: 'translations/en.json',
-            fi: 'translations/fi.json'
+            fi: 'translations/fi.json',
         };
     },
 
@@ -55,7 +55,7 @@ Module.register('MMM-digitraffic-trains', {
         var self = this;
         // If not getted stations then show loading message
         if (self.stationsCache === null) {
-            self.sendSocketNotification('GET_STATIONS');
+            self.sendSocketNotification('MMM_DIGITRAFFIC_TRAINS_GET_STATIONS');
             var wrapper = document.createElement('div');
             wrapper.innerHTML = self.translate('LOADING');
             wrapper.className = 'light small loading';
@@ -64,8 +64,10 @@ Module.register('MMM-digitraffic-trains', {
 
         // If showOnLyDestinations then filter trains so at there is only wanted destinations
         if (self.config.showOnlyDestinations.length > 0) {
-            self.trains = self.trains.filter(function(train){
-                return self.config.showOnlyDestinations.includes(self.stationsCache[train.destination]);
+            self.trains = self.trains.filter(function (train) {
+                return self.config.showOnlyDestinations.includes(
+                    self.stationsCache[train.destination]
+                );
             });
         }
 
@@ -87,17 +89,21 @@ Module.register('MMM-digitraffic-trains', {
         var headers = [
             {
                 text: self.translate('DEPARTURE_TIME'),
-                cls: 'departure-time'
-            }, {
+                cls: 'departure-time',
+            },
+            {
                 text: self.translate('TRAIN'),
-                cls: 'train'
-            }, {
+                cls: 'train',
+            },
+            {
                 text: self.translate('DESTINATION'),
-                cls: 'destination'
-            }, {
+                cls: 'destination',
+            },
+            {
                 text: self.translate('TRACK'),
-                cls: 'header-raide'
-            }];
+                cls: 'header-raide',
+            },
+        ];
 
         // Loop headers and create table row th's
         headers.forEach(function (header) {
@@ -114,7 +120,10 @@ Module.register('MMM-digitraffic-trains', {
             // icon
             var icon = '';
             if (self.config.showIcon === true) {
-                icon = '<span class="icon"><i class="fas fa-' + self.config.icon + '"></i></span>';
+                icon =
+                    '<span class="icon"><i class="fas fa-' +
+                    self.config.icon +
+                    '"></i></span>';
             }
 
             // time
@@ -123,10 +132,16 @@ Module.register('MMM-digitraffic-trains', {
             var estimateTime = train.estimateTime;
             var timeCellContent = scheduledTime;
             if (scheduledTime != estimateTime) {
-                timeCellContent += '<span class="icon"><i class="fas fa-arrow-right"></i></span><span class="light small late">' + estimateTime + '</span>';
+                timeCellContent +=
+                    '<span class="icon"><i class="fas fa-arrow-right"></i></span><span class="light small late">' +
+                    estimateTime +
+                    '</span>';
             }
             if (train.cancelled) {
-                timeCellContent += '<span class="cancelled"> ' + self.translate('CANCELLED') + ' </span>';
+                timeCellContent +=
+                    '<span class="cancelled"> ' +
+                    self.translate('CANCELLED') +
+                    ' </span>';
             }
             timeCell.innerHTML = icon + timeCellContent;
             timeCell.className = 'light small';
@@ -157,7 +172,8 @@ Module.register('MMM-digitraffic-trains', {
         if (this.error === true) {
             var row = document.createElement('tr');
             var errorCell = document.createElement('td');
-            var errorIcon = '<span class="icon"><i class="fas fa-exclamation-triangle"></i></span>';
+            var errorIcon =
+                '<span class="icon"><i class="fas fa-exclamation-triangle"></i></span>';
             errorCell.innerHTML = errorIcon + self.translate('TIMETABLE_ERROR');
             errorCell.className = 'light small line error';
             errorCell.setAttribute('colspan', '4');
@@ -177,15 +193,27 @@ Module.register('MMM-digitraffic-trains', {
         var delay = self.config.updateInterval || 60 * 1000;
 
         if (self.firstTimeLoaded === false && self.stationsCache === null) {
-            self.sendSocketNotification('GET_STATIONS');
-        } else if (self.firstTimeLoaded === false && self.stationsCache !== null) {
-            self.sendSocketNotification('CONFIG', self.config);
+            self.sendSocketNotification('MMM_DIGITRAFFIC_TRAINS_GET_STATIONS', {
+                config: self.config,
+                identifier: self.identifier,
+            });
+        } else if (
+            self.firstTimeLoaded === false &&
+            self.stationsCache !== null
+        ) {
+            self.sendSocketNotification('MMM_DIGITRAFFIC_TRAINS_CONFIG', {
+                config: self.config,
+                identifier: self.identifier,
+            });
             self.firstTimeLoaded = true;
         } else {
             clearTimeout(this.updateTimer);
 
             self.updateTimer = setTimeout(function () {
-                self.sendSocketNotification('CONFIG', self.config);
+                self.sendSocketNotification('MMM_DIGITRAFFIC_TRAINS_CONFIG', {
+                    config: self.config,
+                    identifier: self.identifier,
+                });
             }, delay);
         }
     },
@@ -207,25 +235,27 @@ Module.register('MMM-digitraffic-trains', {
      * @param {Object} payload payload
      */
     socketNotificationReceived: function (notification, payload) {
+        if (payload.identifier !== this.identifier) return;
+
         switch (notification) {
-            case 'STATIONS_RESPONSE':
+            case 'MMM_DIGITRAFFIC_TRAINS_STATIONS_RESPONSE':
                 this.stationsCache = payload.data;
                 this.scheduleNextFetch();
                 break;
-            case 'STATIONS_RESPONSE_ERROR':
+            case 'MMM_DIGITRAFFIC_TRAINS_STATIONS_RESPONSE_ERROR':
                 this.scheduleNextFetch();
                 break;
-            case 'TIME_TABLE_RESPONSE':
+            case 'MMM_DIGITRAFFIC_TRAINS_TIME_TABLE_RESPONSE':
                 this.trains = payload.data;
                 this.error = false;
                 this.updateDom();
                 this.scheduleNextFetch();
                 break;
-            case 'TIME_TABLE_RESPONSE_ERROR':
+            case 'MMM_DIGITRAFFIC_TRAINS_TIME_TABLE_RESPONSE_ERROR':
                 this.error = true;
                 this.updateDom();
                 this.scheduleNextFetch();
                 break;
         }
-    }
+    },
 });
